@@ -538,9 +538,9 @@ int ai_show_roadmap(char *buf) {
     strcat(buf, "v3.0 │ Global Governance    │ ✅ Completed        \n");
     strcat(buf, "v4.0 │ Future AI (Quantum)  │ ✅ Completed        \n");
     strcat(buf, "v5.0 │ Singularity          │ 🔄 In Progress     \n");
-    strcat(buf, "v6.0 │ Infinity            │ 📅 Planned         \n");
-    strcat(buf, "v7.0 │ Meta-Reality        │ 📅 Planned         \n");
-    strcat(buf, "v8.0 │ Final Destiny       │ 📅 Planned         \n");
+    strcat(buf, "v6.0 │ Infinity             │ 📅 Planned         \n");
+    strcat(buf, "v7.0 │ Meta-Reality         │ 📅 Planned         \n");
+    strcat(buf, "v8.0 │ Final Destiny        │ 📅 Planned         \n");
     strcat(buf, "═══════════════════════════════════════════════════\n");
     
     return 0;
@@ -592,3 +592,4 @@ int ai_destiny_core(const char *input, char *output) {
     strcpy(output, "✨ Destiny AI: Menghitung trajectory takdir berdasarkan input.");
     return 0;
 }
+

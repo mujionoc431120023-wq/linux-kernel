@@ -6,9 +6,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <ctype.h>
 #include "../include/ai_hub.h"
 
-/* Color codes for terminal */
+#define MAX_INPUT 4096
+#define MAX_OUTPUT 8192
+
+/* Color codes for terminal output */
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
@@ -18,8 +22,8 @@
 #define CYAN    "\033[36m"
 #define BOLD    "\033[1m"
 
-/* Print welcome banner */
-void print_banner(void) {
+/* Print banner */
+void print_banner() {
     printf(BOLD CYAN);
     printf("╔═══════════════════════════════════════════════════════════════╗\n");
     printf("║           OS-MINI AI OMEGA v1.0.0                         ║\n");
@@ -30,7 +34,7 @@ void print_banner(void) {
 }
 
 /* Print main menu */
-void print_menu(void) {
+void print_menu() {
     printf(BOLD YELLOW "\n═══ PILIH DOMAIN AI ===" RESET "\n");
     printf(BLUE "  [1]" RESET " Healthcare     - Analisis kesehatan & diagnosis\n");
     printf(BLUE "  [2]" RESET " Education      - Rekomendasi materi pembelajaran\n");
@@ -44,18 +48,31 @@ void print_menu(void) {
     printf(CYAN "  [10]" RESET " Destiny        - Masa depan & takdir\n");
     printf(CYAN "  [11]" RESET " IoT Status     - Cek status semua device\n");
     printf(YELLOW "  [12]" RESET " Context Info   - Lihat konteks & sentiment\n");
-    printf(BOLD GREEN "  [13]" RESET " Self-Repair    - Auto fix bug & health check\n");
+    printf(GREEN "  [13]" RESET " Self-Repair    - Auto fix bug & health check\n");
     printf(BOLD RED "  [0]" RESET " Exit\n");
-    printf(BOLD GREEN "\n>>> " RESET);
+    printf(YELLOW "\n>>> Pilih menu: " RESET);
 }
 
-/* Handle healthcare */
-void handle_health(void) {
+/* Print CodeAgent menu */
+void print_codeagent_menu() {
+    printf(BOLD MAGENTA "\n═══ CODEAGENT - COMPLEX CODING HANDLER ===" RESET "\n");
+    printf(BLUE "  [1]" RESET " Analyze Task      - Analisis tugas coding kompleks\n");
+    printf(BLUE "  [2]" RESET " Generate Code     - Generate kode (C, Python, JS, etc)\n");
+    printf(BLUE "  [3]" RESET " Debug & Fix       - Debug error & berikan solusi\n");
+    printf(BLUE "  [4]" RESET " Code Review       - Review kode, temukan issue\n");
+    printf(BLUE "  [5]" RESET " Optimize          - Optimasi performa kode\n");
+    printf(BLUE "  [6]" RESET " Explain           - Jelaskan kode secara detail\n");
+    printf(BOLD RED "  [0]" RESET " Back to main menu\n");
+    printf(YELLOW "\n>>> Pilih menu: " RESET);
+}
+
+/* Handle Healthcare AI */
+void handle_health() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     
     printf(CYAN "\n=== HEALTHCARE AI ===" RESET "\n");
-    printf("Masukkan gejala (例: batuk, demam, sakit kepala, sesak): ");
+    printf("Masukkan gejala (例: batuk, demam, sakit kepala, sesak, mual): ");
     fgets(input, MAX_INPUT, stdin);
     input[strcspn(input, "\n")] = 0;
     
@@ -63,13 +80,13 @@ void handle_health(void) {
     printf(GREEN "\n📋 Diagnosis: %s\n" RESET, output);
 }
 
-/* Handle education */
-void handle_education(void) {
+/* Handle Education AI */
+void handle_education() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     
     printf(CYAN "\n=== EDUCATION AI ===" RESET "\n");
-    printf("Masukkan topik (例: matematika, sejarah, fisika, programming): ");
+    printf("Masukkan topik (例: matematika, sejarah, fisika, bahasa, programming): ");
     fgets(input, MAX_INPUT, stdin);
     input[strcspn(input, "\n")] = 0;
     
@@ -77,13 +94,13 @@ void handle_education(void) {
     printf(GREEN "\n📚 Materi: %s\n" RESET, output);
 }
 
-/* Handle finance */
-void handle_finance(void) {
+/* Handle Finance AI */
+void handle_finance() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     
     printf(CYAN "\n=== FINANCE AI ===" RESET "\n");
-    printf("Masukkan transaksi (例: investasi, jumlah besar, regular, crypto): ");
+    printf("Masukkan transaksi (例: jumlah besar, investasi, regular, foreign, crypto): ");
     fgets(input, MAX_INPUT, stdin);
     input[strcspn(input, "\n")] = 0;
     
@@ -91,13 +108,13 @@ void handle_finance(void) {
     printf(GREEN "\n💰 Analisis: %s\n" RESET, output);
 }
 
-/* Handle manufacturing */
-void handle_manufacturing(void) {
+/* Handle Manufacturing AI */
+void handle_manufacturing() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     
     printf(CYAN "\n=== MANUFACTURING AI ===" RESET "\n");
-    printf("Masukkan data sensor (例: vibration_high, temp_high, pressure_drop): ");
+    printf("Masukkan data sensor (例: vibration_high, temp_high, pressure_drop, oil_low): ");
     fgets(input, MAX_INPUT, stdin);
     input[strcspn(input, "\n")] = 0;
     
@@ -105,13 +122,13 @@ void handle_manufacturing(void) {
     printf(GREEN "\n🏭 Laporan: %s\n" RESET, output);
 }
 
-/* Handle IoT */
-void handle_iot(void) {
+/* Handle IoT AI */
+void handle_iot() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     
     printf(CYAN "\n=== IoT AI ===" RESET "\n");
-    printf("Masukkan perintah (例: nyalakan lampu, matikan AC, status): ");
+    printf("Masukkan perintah (例: lamp_on, ac_temp_high, overheat, status): ");
     fgets(input, MAX_INPUT, stdin);
     input[strcspn(input, "\n")] = 0;
     
@@ -119,8 +136,8 @@ void handle_iot(void) {
     printf(GREEN "\n🏠 Status: %s\n" RESET, output);
 }
 
-/* Handle smart city */
-void handle_smartcity(void) {
+/* Handle Smart City AI */
+void handle_smartcity() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     int submenu;
@@ -132,7 +149,7 @@ void handle_smartcity(void) {
     printf("  [4] Layanan Publik\n");
     printf("Pilih: ");
     scanf("%d", &submenu);
-    getchar();
+    getchar(); // consume newline
     
     switch(submenu) {
         case 1:
@@ -150,14 +167,14 @@ void handle_smartcity(void) {
             printf(GREEN "\n⚡ Status: %s\n" RESET, output);
             break;
         case 3:
-            printf("Data lingkungan (例: polusi, hujan, temp_anomaly): ");
+            printf("Data lingkungan (例: polusi, hujan, temp_anomaly, quality_good): ");
             fgets(input, MAX_INPUT, stdin);
             input[strcspn(input, "\n")] = 0;
             ai_env_analyze(input, output);
             printf(GREEN "\n🌍 Hasil: %s\n" RESET, output);
             break;
         case 4:
-            printf("Permintaan layanan (例: ambulance, pemadam, polisi): ");
+            printf("Permintaan layanan (例: ambulance, pemadam, polisi, maintenance): ");
             fgets(input, MAX_INPUT, stdin);
             input[strcspn(input, "\n")] = 0;
             ai_service_request(input, output);
@@ -168,8 +185,8 @@ void handle_smartcity(void) {
     }
 }
 
-/* Handle governance */
-void handle_governance(void) {
+/* Handle Governance AI */
+void handle_governance() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     
@@ -182,8 +199,8 @@ void handle_governance(void) {
     printf(GREEN "\n⚖️ Compliance: %s\n" RESET, output);
 }
 
-/* Handle future AI */
-void handle_future(void) {
+/* Handle Future AI */
+void handle_future() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     int submenu;
@@ -196,7 +213,7 @@ void handle_future(void) {
     printf("  [5] Adaptive Context\n");
     printf("Pilih: ");
     scanf("%d", &submenu);
-    getchar();
+    getchar(); // consume newline
     
     switch(submenu) {
         case 1:
@@ -221,7 +238,7 @@ void handle_future(void) {
             printf("Feedback (例: positif, negatif): ");
             fgets(input, MAX_INPUT, stdin);
             input[strcspn(input, "\n")] = 0;
-            ai_self_learn(input, "general", output);
+            ai_self_learn(input, "domain_default", output);
             break;
         case 5:
             printf("Context (例: malam, kerja, relaksasi): ");
@@ -236,109 +253,102 @@ void handle_future(void) {
     printf(GREEN "\n🔮 Result: %s\n" RESET, output);
 }
 
-/* Handle CodeAgent */
-void handle_codeagent(void) {
+/* Handle CodeAgent - Complex Coding Tasks */
+void handle_codeagent() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
+    char code_input[MAX_INPUT * 4];
     int submenu;
     
     while (1) {
-        printf(BOLD MAGENTA "\n═══ CODEAGENT ===" RESET "\n");
-        printf(BLUE "  [1]" RESET " Analyze     - Analisis tugas coding\n");
-        printf(BLUE "  [2]" RESET " Generate    - Generate kode\n");
-        printf(BLUE "  [3]" RESET " Debug       - Debug & fix error\n");
-        printf(BLUE "  [4]" RESET " Review      - Code review\n");
-        printf(BLUE "  [5]" RESET " Optimize    - Optimasi kode\n");
-        printf(BLUE "  [6]" RESET " Explain     - Jelaskan kode\n");
-        printf(BOLD RED "  [0]" RESET " Back\n");
-        printf(BOLD GREEN "\n>>> " RESET);
-        
-        if (scanf("%d", &submenu) != 1) {
-            printf(RED "Invalid input!\n" RESET);
-            break;
-        }
-        getchar();
+        print_codeagent_menu();
+        scanf("%d", &submenu);
+        getchar(); // consume newline
         
         if (submenu == 0) break;
         
         switch(submenu) {
-            case 1:
-                printf(CYAN "\n=== ANALYZE ===" RESET "\n");
-                printf("Masukkan tugas (algorithm, data structure, performance, security, api, testing): ");
+            case 1: // Analyze
+                printf(CYAN "\n=== CODEAGENT ANALYZE ===" RESET "\n");
+                printf("Masukkan tugas coding (algorithm, data structure, performance, security, architecture, database, api, testing): ");
                 fgets(input, MAX_INPUT, stdin);
                 input[strcspn(input, "\n")] = 0;
                 ai_codeagent_analyze(input, output);
-                printf(GREEN "\n📊 Analysis: %s\n" RESET, output);
+                printf(GREEN "\n📊 Analysis:\n%s\n" RESET, output);
                 break;
                 
-            case 2:
-                printf(CYAN "\n=== GENERATE ===" RESET "\n");
-                printf("Pilih bahasa [1] C [2] Python [3] JavaScript: ");
-                int lang;
-                scanf("%d", &lang);
+            case 2: // Generate
+                printf(CYAN "\n=== CODEAGENT CODE GENERATION ===" RESET "\n");
+                printf("Pilih bahasa: [1] C [2] Python [3] JavaScript: ");
+                int lang_choice;
+                scanf("%d", &lang_choice);
                 getchar();
                 
-                char lang_str[32];
-                if (lang == 1) strcpy(lang_str, "c");
-                else if (lang == 2) strcpy(lang_str, "python");
-                else if (lang == 3) strcpy(lang_str, "javascript");
-                else { printf(RED "Invalid!\n" RESET); break; }
+                char language[32];
+                if (lang_choice == 1) strcpy(language, "c");
+                else if (lang_choice == 2) strcpy(language, "python");
+                else if (lang_choice == 3) strcpy(language, "javascript");
+                else { printf(RED "Pilihan tidak valid!\n" RESET); break; }
                 
-                printf("Requirements (例: linked list, api server, web server, machine learning): ");
+                printf("Requirements (linked list, api server, web server, machine learning, async): ");
                 fgets(input, MAX_INPUT, stdin);
                 input[strcspn(input, "\n")] = 0;
                 
-                ai_codeagent_generate(lang_str, input, output);
+                ai_codeagent_generate(language, input, output);
                 printf(GREEN "\n💻 Generated Code:\n\n%s\n" RESET, output);
                 break;
                 
-            case 3:
-                printf(CYAN "\n=== DEBUG ===" RESET "\n");
-                printf("Masukkan error (null pointer, segmentation fault, memory leak, sql injection): ");
+            case 3: // Debug
+                printf(CYAN "\n=== CODEAGENT DEBUG ===" RESET "\n");
+                printf("Masukkan deskripsi error (null pointer, segmentation fault, memory leak, infinite loop, race condition, sql injection, deadlock): ");
                 fgets(input, MAX_INPUT, stdin);
                 input[strcspn(input, "\n")] = 0;
+                
                 ai_codeagent_debug("", input, output);
-                printf(GREEN "\n🔧 Fix: %s\n" RESET, output);
+                printf(GREEN "\n🔧 Debug & Fix:\n%s\n" RESET, output);
                 break;
                 
-            case 4:
-                printf(CYAN "\n=== REVIEW ===" RESET "\n");
-                printf("Masukkan kode atau keyword (goto, malloc, eval, SELECT): ");
-                fgets(input, MAX_INPUT, stdin);
-                input[strcspn(input, "\n")] = 0;
-                ai_codeagent_review(input, output);
-                printf(GREEN "\n📝 Review: %s\n" RESET, output);
+            case 4: // Review
+                printf(CYAN "\n=== CODEAGENT CODE REVIEW ===" RESET "\n");
+                printf("Masukkan kode untuk direview (atau keyword: goto, malloc, eval, SELECT, printf): ");
+                fgets(code_input, MAX_INPUT * 4, stdin);
+                code_input[strcspn(code_input, "\n")] = 0;
+                
+                ai_codeagent_review(code_input, output);
+                printf(GREEN "\n📝 Code Review:\n%s\n" RESET, output);
                 break;
                 
-            case 5:
-                printf(CYAN "\n=== OPTIMIZE ===" RESET "\n");
-                printf("Masukkan pattern (SELECT *, String+, ArrayList): ");
-                fgets(input, MAX_INPUT, stdin);
-                input[strcspn(input, "\n")] = 0;
-                ai_codeagent_optimize(input, output);
-                printf(GREEN "\n⚡ Optimization: %s\n" RESET, output);
+            case 5: // Optimize
+                printf(CYAN "\n=== CODEAGENT OPTIMIZE ===" RESET "\n");
+                printf("Masukkan kode atau pattern (ArrayList, SELECT *, String+, == String): ");
+                fgets(code_input, MAX_INPUT * 4, stdin);
+                code_input[strcspn(code_input, "\n")] = 0;
+                
+                ai_codeagent_optimize(code_input, output);
+                printf(GREEN "\n⚡ Optimization:\n%s\n" RESET, output);
                 break;
                 
-            case 6:
-                printf(CYAN "\n=== EXPLAIN ===" RESET "\n");
-                printf("Masukkan kode (struct, pthread, SELECT, def, class, async): ");
-                fgets(input, MAX_INPUT, stdin);
-                input[strcspn(input, "\n")] = 0;
-                ai_codeagent_explain(input, output);
-                printf(GREEN "\n📖 Explanation: %s\n" RESET, output);
+            case 6: // Explain
+                printf(CYAN "\n=== CODEAGENT EXPLAIN ===" RESET "\n");
+                printf("Masukkan kode untuk dijelaskan (struct, pthread, SELECT, def, class, async): ");
+                fgets(code_input, MAX_INPUT * 4, stdin);
+                code_input[strcspn(code_input, "\n")] = 0;
+                
+                ai_codeagent_explain(code_input, output);
+                printf(GREEN "\n📖 Explanation:\n%s\n" RESET, output);
                 break;
                 
             default:
                 printf(RED "Pilihan tidak valid!\n" RESET);
         }
         
-        printf(YELLOW "\nTekan Enter..." RESET);
+        printf(YELLOW "\nTekan Enter untuk lanjut..." RESET);
         getchar();
     }
 }
 
-/* Handle destiny */
-void handle_destiny(void) {
+/* Handle Destiny */
+void handle_destiny() {
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
     
@@ -351,8 +361,8 @@ void handle_destiny(void) {
     printf(GREEN "\n✨ Destiny: %s\n" RESET, output);
 }
 
-/* Handle IoT status */
-void handle_iot_status(void) {
+/* Handle IoT Status */
+void handle_iot_status() {
     char output[MAX_OUTPUT];
     
     printf(CYAN "\n=== IoT DEVICE STATUS ===" RESET "\n");
@@ -360,11 +370,11 @@ void handle_iot_status(void) {
     printf(GREEN "%s\n" RESET, output);
 }
 
-/* Handle context info */
-void handle_context_info(void) {
+/* Handle Context Info */
+void handle_context_info() {
     char lang[32] = "Unknown";
     char emotion[32] = "Neutral";
-    char prediction[128] = "None";
+    char prediction[128] = "Waiting...";
     const char *context;
     
     printf(CYAN "\n=== CONTEXT & SENTIMENT INFO ===" RESET "\n");
@@ -382,7 +392,7 @@ void handle_context_info(void) {
 }
 
 /* Handle Self-Repair */
-void handle_self_repair(void) {
+void handle_self_repair() {
     int submenu;
     char input[MAX_INPUT];
     char output[MAX_OUTPUT];
@@ -415,8 +425,8 @@ void handle_self_repair(void) {
                 printf(GREEN "%s\n" RESET, output);
                 break;
                 
-            case 2: /* Run Diagnostics */
-                printf(CYAN "\n=== RUNNING DIAGNOSTICS ===" RESET "\n");
+            /* Run Diagnostics */
+ case 2:                printf(CYAN "\n=== RUNNING DIAGNOSTICS ===" RESET "\n");
                 ai_self_repair_run_diagnostics(output, MAX_OUTPUT);
                 printf(GREEN "%s\n" RESET, output);
                 break;
@@ -529,6 +539,9 @@ int main(int argc, char *argv[]) {
             printf("  %s                    - Interactive mode\n", argv[0]);
             printf("  %s \"message\"          - Direct input\n", argv[0]);
             printf("  %s --domain health    - Specify domain\n", argv[0]);
+            printf("  %s --health \"demam\"  - Health AI\n", argv[0]);
+            printf("  %s --edu \"math\"      - Education AI\n", argv[0]);
+            printf("  %s --codeagent \"algorithm\" - CodeAgent\n", argv[0]);
             return 0;
         }
         
@@ -567,7 +580,7 @@ int main(int argc, char *argv[]) {
             printf(RED "Error: Invalid input!\n" RESET);
             break;
         }
-        getchar();
+        getchar(); // consume newline
         
         switch(choice) {
             case 1:

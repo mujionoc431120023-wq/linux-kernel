@@ -1,70 +1,57 @@
-/* ============================================================
-   CODEAGENT - Complex Coding Task Handler
-   Handles sophisticated programming tasks
-   ============================================================ */
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include "../include/ai_hub.h"
+
+/* ============================================================
+   CODEAGENT - Complex Coding Task Handler
+   Handles sophisticated programming tasks including:
+   - Code analysis
+   - Code generation
+   - Bug debugging
+   - Code review
+   - Optimization
+   - Explanation
+   ============================================================ */
 
 /* Analyze coding task and provide response */
 int ai_codeagent_analyze(const char *task, char *response) {
-    if (!task || !response) return -1;
-    
-    char lower_task[512];
-    strncpy(lower_task, task, 511);
-    lower_task[511] = '\0';
-    
-    for (int i = 0; lower_task[i]; i++) {
-        lower_task[i] = (char)tolower(lower_task[i]);
-    }
-    
-    if (strstr(lower_task, "algorithm")) {
-        strcpy(response, "CodeAgent: Algoritma memerlukan analisis kompleksitas O(n log n). "
-                "Rekomendasi: divide-and-conquer atau dynamic programming.");
-    } else if (strstr(lower_task, "data structure")) {
-        strcpy(response, "CodeAgent: Struktur data optimal adalah Hash Map untuk lookup O(1) "
-                "atau B-Tree untuk sorted data.");
-    } else if (strstr(lower_task, "performance")) {
-        strcpy(response, "CodeAgent: Masalah performance terdeteksi. "
-                "Saran: caching, minimalkan I/O blocking, pertimbangkan multi-threading.");
-    } else if (strstr(lower_task, "security")) {
-        strcpy(response, "CodeAgent: Potensi vulnerability ditemukan. "
-                "Validasi input, gunakan prepared statements, implementasi rate limiting.");
-    } else if (strstr(lower_task, "architecture")) {
-        strcpy(response, "CodeAgent: Arsitektur yang direkomendasikan: "
-                "Microservices, Event-Driven, atau Clean Architecture.");
-    } else if (strstr(lower_task, "database")) {
-        strcpy(response, "CodeAgent: Optimasi database diperlukan. "
-                "Gunakan indexing, query optimization, pertimbangkan denormalization.");
-    } else if (strstr(lower_task, "api")) {
-        strcpy(response, "CodeAgent: Design API memerlukan RESTful principles, "
-                "versioning, authentication (OAuth2/JWT), dan proper error handling.");
-    } else if (strstr(lower_task, "testing")) {
-        strcpy(response, "CodeAgent: Strategi testing: "
-                "Unit tests (80%+ coverage), Integration tests, E2E dengan CI/CD.");
+    if (strstr(task, "algorithm")) {
+        strcpy(response, "CodeAgent: Algoritma yang diminta memerlukan analisis kompleksitas O(n log n). ");
+        strcat(response, "Rekomendasi: gunakan divide-and-conquer atau dynamic programming.");
+    } else if (strstr(task, "data structure")) {
+        strcpy(response, "CodeAgent: Struktur data optimal untuk kasus ini adalah ");
+        strcat(response, "Hash Map untuk lookup O(1) atau B-Tree untuk sorted data.");
+    } else if (strstr(task, "performance")) {
+        strcpy(response, "CodeAgent: Masalah performance terdeteksi. ");
+        strcat(response, "Saran: Gunakan caching, minimalkan I/O blocking, pertimbangkan multi-threading.");
+    } else if (strstr(task, "security")) {
+        strcpy(response, "CodeAgent: Analisis security menemukan potensi vulnerability. ");
+        strcat(response, "Validasi input, gunakan prepared statements, implementasi rate limiting.");
+    } else if (strstr(task, "architecture")) {
+        strcpy(response, "CodeAgent: Untuk arsitektur yang diminta, pertimbangkan pattern: ");
+        strcat(response, "Microservices, Event-Driven, atau Clean Architecture.");
+    } else if (strstr(task, "database")) {
+        strcpy(response, "CodeAgent: Optimasi database diperlukan. ");
+        strcat(response, "Gunakan indexing, query optimization, pertimbangkan denormalization.");
+    } else if (strstr(task, "api")) {
+        strcpy(response, "CodeAgent: Design API yang baik memerlukan RESTful principles, ");
+        strcat(response, "versioning, authentication (OAuth2/JWT), dan proper error handling.");
+    } else if (strstr(task, "testing")) {
+        strcpy(response, "CodeAgent: Strategi testing yang direkomendasikan: ");
+        strcat(response, "Unit tests (80%+ coverage), Integration tests, E2E tests dengan CI/CD.");
     } else {
-        strcpy(response, "CodeAgent: Tugas coding dianalisis. "
-                "Mohon detail lebih spesifik (algorithm, database, api, dll).");
+        strcpy(response, "CodeAgent: Tugas coding dianalisis. ");
+        strcat(response, "Mohon berikan detail lebih spesifik (algorithm, database, api, etc).");
     }
     return 0;
 }
 
 /* Generate code based on language and requirements */
 int ai_codeagent_generate(const char *language, const char *requirements, char *code) {
-    if (!language || !requirements || !code) return -1;
+    char template[4096];
     
-    char lang_lower[32];
-    strncpy(lang_lower, language, 31);
-    lang_lower[31] = '\0';
-    
-    for (int i = 0; lang_lower[i]; i++) {
-        lang_lower[i] = (char)tolower(lang_lower[i]);
-    }
-    
-    if (strcmp(lang_lower, "c") == 0 || strcmp(lang_lower, "cpp") == 0) {
-        if (strstr(requirements, "linked list") || strstr(requirements, "list")) {
+    if (strcmp(language, "c") == 0 || strcmp(language, "C") == 0) {
+        if (strstr(requirements, "linked list")) {
             strcpy(code, 
 "/* Linked List Implementation in C */\n"
 "#include <stdio.h>\n"
@@ -79,25 +66,24 @@ int ai_codeagent_generate(const char *language, const char *requirements, char *
 "    newNode->next = NULL;\n"
 "    return newNode;\n"
 "}\n\n"
-"void insertEnd(Node** head, int data) {\n"
+"void insertAtEnd(Node** head, int data) {\n"
 "    Node* newNode = createNode(data);\n"
-"    if (!*head) { *head = newNode; return; }\n"
+"    if (*head == NULL) {\n"
+"        *head = newNode;\n"
+"        return;\n"
+"    }\n"
 "    Node* temp = *head;\n"
-"    while (temp->next) temp = temp->next;\n"
+"    while (temp->next != NULL) temp = temp->next;\n"
 "    temp->next = newNode;\n"
 "}\n\n"
 "void printList(Node* head) {\n"
-"    while (head) { printf(\"%d -> \", head->data); head = head->next; }\n"
+"    while (head != NULL) {\n"
+"        printf(\"%d -> \", head->data);\n"
+"        head = head->next;\n"
+"    }\n"
 "    printf(\"NULL\\n\");\n"
-"}\n\n"
-"int main() {\n"
-"    Node* head = NULL;\n"
-"    insertEnd(&head, 1);\n"
-"    insertEnd(&head, 2);\n"
-"    printList(head);\n"
-"    return 0;\n"
 "}");
-        } else if (strstr(requirements, "api server") || strstr(requirements, "server")) {
+        } else if (strstr(requirements, "api server")) {
             strcpy(code,
 "/* Simple HTTP API Server in C */\n"
 "#include <stdio.h>\n"
@@ -105,10 +91,12 @@ int ai_codeagent_generate(const char *language, const char *requirements, char *
 "#include <string.h>\n"
 "#include <unistd.h>\n"
 "#include <arpa/inet.h>\n\n"
-"#define PORT 8080\n\n"
+"#define PORT 8080\n"
+"#define BUFFER_SIZE 4096\n\n"
 "void handleRequest(int clientSocket) {\n"
-"    char buffer[1024] = {0};\n"
-"    read(clientSocket, buffer, 1024);\n"
+"    char buffer[BUFFER_SIZE] = {0};\n"
+"    read(clientSocket, buffer, BUFFER_SIZE);\n"
+"    \n"
 "    char* response = \"HTTP/1.1 200 OK\\r\\n\"\n"
 "                     \"Content-Type: application/json\\r\\n\\n\"\n"
 "                     {\\\"status\\\":\\\"ok\\\"}\";\n"
@@ -116,26 +104,31 @@ int ai_codeagent_generate(const char *language, const char *requirements, char *
 "    close(clientSocket);\n"
 "}\n\n"
 "int main() {\n"
-"    int serverSocket = socket(AF_INET, SOCK_STREAM, 0);\n"
-"    struct sockaddr_in address = {0};\n"
+"    int serverSocket, clientSocket;\n"
+"    struct sockaddr_in address;\n"
+"    int opt = 1;\n"
+"    \n"
+"    serverSocket = socket(AF_INET, SOCK_STREAM, 0);\n"
+"    setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));\n"
+"    \n"
 "    address.sin_family = AF_INET;\n"
-"    address.sin_port = htons(PORT);\n"
 "    address.sin_addr.s_addr = INADDR_ANY;\n"
+"    address.sin_port = htons(PORT);\n"
 "    \n"
 "    bind(serverSocket, (struct sockaddr*)&address, sizeof(address));\n"
 "    listen(serverSocket, 10);\n"
 "    \n"
 "    while (1) {\n"
-"        int client = accept(serverSocket, NULL, NULL);\n"
-"        handleRequest(client);\n"
+"        clientSocket = accept(serverSocket, NULL, NULL);\n"
+"        handleRequest(clientSocket);\n"
 "    }\n"
 "    return 0;\n"
 "}");
         } else {
             strcpy(code, "/* C code generation: specify linked list, api server, etc */");
         }
-    } else if (strcmp(lang_lower, "python") == 0) {
-        if (strstr(requirements, "web server") || strstr(requirements, "flask")) {
+    } else if (strcmp(language, "python") == 0 || strcmp(language, "Python") == 0) {
+        if (strstr(requirements, "web server")) {
             strcpy(code,
 "# Flask Web Server in Python\n"
 "from flask import Flask, jsonify, request\n"
@@ -149,12 +142,13 @@ int ai_codeagent_generate(const char *language, const char *requirements, char *
 "@app.route('/api/data', methods=['GET', 'POST'])\n"
 "def handle_data():\n"
 "    if request.method == 'POST':\n"
-"        return jsonify({'received': request.get_json()}), 201\n"
+"        data = request.get_json()\n"
+"        return jsonify({'received': data}), 201\n"
 "    return jsonify({'data': []}), 200\n"
 "\n"
 "if __name__ == '__main__':\n"
-"    app.run(host='0.0.0.0', port=5000)");
-        } else if (strstr(requirements, "machine learning") || strstr(requirements, "ml")) {
+"    app.run(host='0.0.0.0', port=5000, debug=True)");
+        } else if (strstr(requirements, "machine learning")) {
             strcpy(code,
 "# Machine Learning Pipeline in Python\n"
 "import numpy as np\n"
@@ -166,214 +160,253 @@ int ai_codeagent_generate(const char *language, const char *requirements, char *
 "    X_train, X_test, y_train, y_test = train_test_split(\n"
 "        X, y, test_size=0.2, random_state=42\n"
 "    )\n"
-"    model = RandomForestClassifier(n_estimators=100)\n"
+"    \n"
+"    model = RandomForestClassifier(n_estimators=100, random_state=42)\n"
 "    model.fit(X_train, y_train)\n"
-"    return model, accuracy_score(y_test, model.predict(X_test))\n"
+"    \n"
+"    predictions = model.predict(X_test)\n"
+"    accuracy = accuracy_score(y_test, predictions)\n"
+"    \n"
+"    return model, accuracy\n"
 "\n"
-"# Usage: X, y = load_data(); model, acc = train_model(X, y)");
+"# Usage:\n"
+"# X = np.array([[1, 2], [3, 4], [5, 6]])\n"
+"# y = np.array([0, 1, 0])\n"
+"# model, acc = train_model(X, y)\n"
+"# print(f'Accuracy: {acc}')");
         } else {
-            strcpy(code, "# Python: specify web server, machine learning, etc");
+            strcpy(code, "# Python code generation: specify web server, machine learning, etc");
         }
-    } else if (strcmp(lang_lower, "javascript") == 0 || strcmp(lang_lower, "js") == 0) {
-        if (strstr(requirements, "async") || strstr(requirements, "api client")) {
+    } else if (strcmp(language, "javascript") == 0 || strcmp(language, "js") == 0) {
+        if (strstr(requirements, "async")) {
             strcpy(code,
-"// Async REST API Client in JavaScript\n"
+"// Async/Await REST API Client in JavaScript\n"
 "class APIClient {\n"
-"    constructor(baseURL) { this.baseURL = baseURL; }\n"
+"    constructor(baseURL) {\n"
+"        this.baseURL = baseURL;\n"
+"    }\n"
 "\n"
 "    async get(endpoint) {\n"
-"        const res = await fetch(`${this.baseURL}${endpoint}`);\n"
-"        if (!res.ok) throw new Error(`HTTP ${res.status}`);\n"
-"        return res.json();\n"
+"        const response = await fetch(`${this.baseURL}${endpoint}`);\n"
+"        if (!response.ok) throw new Error(`HTTP ${response.status}`);\n"
+"        return response.json();\n"
 "    }\n"
 "\n"
 "    async post(endpoint, data) {\n"
-"        return fetch(`${this.baseURL}${endpoint}`, {\n"
+"        const response = await fetch(`${this.baseURL}${endpoint}`, {\n"
 "            method: 'POST',\n"
 "            headers: { 'Content-Type': 'application/json' },\n"
 "            body: JSON.stringify(data)\n"
-"        }).then(r => r.json());\n"
+"        });\n"
+"        if (!response.ok) throw new Error(`HTTP ${response.status}`);\n"
+"        return response.json();\n"
+"    }\n"
+"\n"
+"    async put(endpoint, data) {\n"
+"        const response = await fetch(`${this.baseURL}${endpoint}`, {\n"
+"            method: 'PUT',\n"
+"            headers: { 'Content-Type': 'application/json' },\n"
+"            body: JSON.stringify(data)\n"
+"        });\n"
+"        if (!response.ok) throw new Error(`HTTP ${response.status}`);\n"
+"        return response.json();\n"
 "    }\n"
 "}\n"
-"// Usage: const api = new APIClient('https://api.example.com');\n"
+"\n"
+"// Usage:\n"
+"// const api = new APIClient('https://api.example.com');\n"
 "// const data = await api.get('/users');");
         } else {
-            strcpy(code, "// JavaScript: specify async, react, etc");
+            strcpy(code, "// JavaScript code generation: specify async, react component, etc");
         }
     } else {
-        sprintf(code, "/* Language '%s' not supported */", language);
+        sprintf(code, "/* CodeAgent: Language '%s' not fully supported yet. */", language);
     }
     return 0;
 }
 
 /* Debug code and provide fixes */
 int ai_codeagent_debug(const char *code, const char *error, char *fix) {
-    if (!error || !fix) return -1;
-    
-    char lower_error[256];
-    strncpy(lower_error, error, 255);
-    lower_error[255] = '\0';
-    
-    for (int i = 0; lower_error[i]; i++) {
-        lower_error[i] = (char)tolower(lower_error[i]);
-    }
-    
-    if (strstr(lower_error, "null pointer") || strstr(lower_error, "null reference") || strstr(lower_error, "null")) {
-        strcpy(fix, "CodeAgent Debug: Null pointer error!\n"
-                "Fix: Selalu periksa NULL sebelum dereferencing.\n"
-                "Contoh: if (ptr != NULL) { /* use ptr */ }");
-    } else if (strstr(lower_error, "segmentation fault") || strstr(lower_error, "segfault")) {
-        strcpy(fix, "CodeAgent Debug: Segmentation fault!\n"
-                "Kemungkinan: Akses memori di luar array, pointer tidak diinisialisasi, atau stack overflow.\n"
-                "Fix: Gunakan gdb/valgrind untuk menemukan baris yang salah.");
-    } else if (strstr(lower_error, "memory leak")) {
-        strcpy(fix, "CodeAgent Debug: Memory leak!\n"
-                "Fix: Setiap malloc() harus punya free().\n"
-                "Gunakan: Valgrind --leak-check=full ./program");
-    } else if (strstr(lower_error, "infinite loop")) {
-        strcpy(fix, "CodeAgent Debug: Infinite loop!\n"
-                "Fix: Pastikan kondisi terminasi akan terpenuhi.\n"
-                "Periksa: Update variabel loop di dalam body.");
-    } else if (strstr(lower_error, "race condition")) {
-        strcpy(fix, "CodeAgent Debug: Race condition!\n"
-                "Fix: Gunakan mutex/locks untuk resource bersama.\n"
-                "Contoh: pthread_mutex_lock(&mutex);");
-    } else if (strstr(lower_error, "sql injection")) {
-        strcpy(fix, "CodeAgent Debug: SQL Injection vulnerability!\n"
-                "CRITICAL: Gunakan parameterized queries/prepared statements.\n"
-                "SALAH: query = \"SELECT * FROM users WHERE id = \" + userId\n"
-                "BENAR: stmt = conn.prepare(\"SELECT * FROM users WHERE id = ?\")");
-    } else if (strstr(lower_error, "deadlock")) {
-        strcpy(fix, "CodeAgent Debug: Potential deadlock!\n"
-                "Fix: Selalu ambil locks dalam urutan yang konsisten.\n"
-                "Hindari: Nested locks atau circular wait.");
+    if (strstr(error, "null pointer") || strstr(error, "null reference")) {
+        strcpy(fix, "CodeAgent Debug: Null pointer error detected!\n");
+        strcat(fix, "Fix: Always check for NULL before dereferencing.\n");
+        strcat(fix, "Example: if (ptr != NULL) { // use ptr }");
+    } else if (strstr(error, "segmentation fault") || strstr(error, "segfault")) {
+        strcpy(fix, "CodeAgent Debug: Segmentation fault detected!\n");
+        strcat(fix, "Possible causes:\n");
+        strcat(fix, "1. Accessing memory outside array bounds\n");
+        strcat(fix, "2. Using uninitialized pointers\n");
+        strcat(fix, "3. Stack overflow from recursion\n");
+        strcat(fix, "Fix: Use debugging tools (gdb, valgrind) to find exact line.");
+    } else if (strstr(error, "memory leak")) {
+        strcpy(fix, "CodeAgent Debug: Memory leak detected!\n");
+        strcat(fix, "Fix: Ensure every malloc() has corresponding free().\n");
+        strcat(fix, "Use: Valgrind --leak-check=full ./program");
+    } else if (strstr(error, "infinite loop")) {
+        strcpy(fix, "CodeAgent Debug: Infinite loop detected!\n");
+        strcat(fix, "Fix: Ensure loop termination condition will be met.\n");
+        strcat(fix, "Check: Update loop variable inside the loop body.");
+    } else if (strstr(error, "race condition")) {
+        strcpy(fix, "CodeAgent Debug: Race condition detected!\n");
+        strcat(fix, "Fix: Use mutex/locks for shared resources.\n");
+        strcat(fix, "Example: pthread_mutex_lock(&mutex) before accessing shared data.");
+    } else if (strstr(error, "sql injection")) {
+        strcpy(fix, "CodeAgent Debug: SQL Injection vulnerability!\n");
+        strcat(fix, "CRITICAL: Use parameterized queries/prepared statements.\n");
+        strcat(fix, "WRONG:  query = \"SELECT * FROM users WHERE id = \" + userId\n");
+        strcat(fix, "RIGHT:  stmt = conn.prepare(\"SELECT * FROM users WHERE id = ?\")");
+    } else if (strstr(error, "deadlock")) {
+        strcpy(fix, "CodeAgent Debug: Potential deadlock detected!\n");
+        strcat(fix, "Fix: Always acquire locks in consistent order.\n");
+        strcat(fix, "Avoid: Nested locks or circular wait dependencies.");
     } else {
-        sprintf(fix, "CodeAgent Debug: Error '%s' dianalisis.\nBerikan pesan error spesifik untuk solusi detail.", error);
+        sprintf(fix, "CodeAgent Debug: Error '%s' analyzed.\nProvide more specific error message for detailed fix.", error);
     }
     return 0;
 }
 
 /* Review code and provide feedback */
 int ai_codeagent_review(const char *code, char *review) {
-    if (!code || !review) return -1;
-    
     if (strstr(code, "goto")) {
-        strcpy(review, "CodeAgent Review: goto ditemukan!\n"
-                "Rating: ⚠️ Warning\n"
-                "Saran: Hindari goto, gunakan if/else atau loops.");
+        strcpy(review, "CodeAgent Review: goto statement found!\n");
+        strcat(review, "Rating: ⚠️ Warning\n");
+        strcat(review, "Advice: Avoid goto, use structured control flow (if/else, loops).\n");
+        strcat(review, "goto makes code hard to maintain and understand.");
     } else if (strstr(code, "malloc") && !strstr(code, "free")) {
-        strcpy(review, "CodeAgent Review: Memory allocation tanpa deallocation!\n"
-                "Rating: 🔴 High Priority\n"
-                "Issue: Potential memory leak - setiap malloc butuh free().");
+        strcpy(review, "CodeAgent Review: Memory allocation without deallocation!\n");
+        strcat(review, "Rating: 🔴 High Priority\n");
+        strcat(review, "Issue: Potential memory leak - every malloc needs free.\n");
+        strcat(review, "Fix: Add free() in error paths and function end.");
     } else if (strstr(code, "eval(")) {
-        strcpy(review, "CodeAgent Review: eval() terdeteksi!\n"
-                "Rating: 🔴 Security Risk\n"
-                "Saran: Hindari eval() - vulnerability security.");
+        strcpy(review, "CodeAgent Review: eval() usage detected!\n");
+        strcat(review, "Rating: 🔴 Security Risk\n");
+        strcat(review, "Advice: Avoid eval() - major security vulnerability.\n");
+        strcat(review, "Use: JSON.parse() or structured data parsing instead.");
     } else if (strstr(code, "SELECT") && strstr(code, "FROM") && !strstr(code, "WHERE")) {
-        strcpy(review, "CodeAgent Review: SQL query tanpa WHERE!\n"
-                "Rating: ⚠️ Warning\n"
-                "Issue: Mengambil SEMUA records - masalah performa.");
+        strcpy(review, "CodeAgent Review: SQL query without WHERE clause!\n");
+        strcat(review, "Rating: ⚠️ Warning\n");
+        strcat(review, "Issue: This will fetch ALL records - performance issue.\n");
+        strcat(review, "Fix: Add WHERE clause to filter results.");
+    } else if (strstr(code, "sudo")) {
+        strcpy(review, "CodeAgent Review: sudo usage in script!\n");
+        strcat(review, "Rating: ⚠️ Security Consideration\n");
+        strcat(review, "Advice: Minimize privilege escalation.\n");
+        strcat(review, "Use specific sudoers configuration for commands.");
+    } else if (strstr(code, "printf") && strstr(code, "%s") && !strstr(code, "sanitize")) {
+        strcpy(review, "CodeAgent Review: Potential format string vulnerability!\n");
+        strcat(review, "Rating: ⚠️ Warning\n");
+        strcat(review, "Issue: User input in printf can be exploited.\n");
+        strcat(review, "Fix: Use printf(\"%s\", user_input) instead of printf(user_input).");
     } else if (strstr(code, "async") && strstr(code, "await")) {
-        strcpy(review, "CodeAgent Review: Async/await pattern!\n"
-                "Rating: ✅ Good Practice\n"
-                "Positif: Modern async pattern, non-blocking I/O.");
+        strcpy(review, "CodeAgent Review: Async/await pattern detected!\n");
+        strcat(review, "Rating: ✅ Good Practice\n");
+        strcat(review, "Positive: Modern async pattern, non-blocking I/O.\n");
+        strcat(review, "Advice: Add proper error handling with try/catch.");
+    } else if (strstr(code, "// TODO") || strstr(code, "// FIXME")) {
+        strcpy(review, "CodeAgent Review: TODO/FIXME comments found!\n");
+        strcat(review, "Rating: ℹ️ Info\n");
+        strcat(review, "Action: Complete these items before production release.");
     } else {
-        strcpy(review, "CodeAgent Review: Analisis selesai.\n"
-                "Rating: ✅ Tidak ada issue kritis.\n"
-                "Saran: Terus ikuti best practices.");
+        strcpy(review, "CodeAgent Review: Code analysis complete.\n");
+        strcat(review, "Rating: ✅ No critical issues detected.\n");
+        strcat(review, "Advice: Continue following best practices.");
     }
     return 0;
 }
 
 /* Optimize code */
 int ai_codeagent_optimize(const char *code, char *optimized) {
-    if (!code || !optimized) return -1;
-    
-    if (strstr(code, "SELECT *")) {
-        strcpy(optimized, "CodeAgent Optimization: SQL query!\n\n"
-                "Before: SELECT * FROM table\n"
-                "After: SELECT column1, column2 FROM table\n\n"
-                "Benefit: Mengurangi transfer data, improve performance.");
-    } else if (strstr(code, "String") && strstr(code, "+") && !strstr(code, "StringBuilder")) {
-        strcpy(optimized, "CodeAgent Optimization: String concatenation!\n\n"
-                "Before: str = str + \"new\";\n"
-                "After: StringBuilder.append(\"new\");\n\n"
-                "Benefit: O(n) instead of O(n²).");
+    if (strstr(code, "for") && strstr(code, "ArrayList") && strstr(code, ".add")) {
+        strcpy(optimized, "CodeAgent Optimization: Array operations detected!\n\n");
+        strcat(optimized, "Before: Repeated array resizing\n");
+        strcat(optimized, "After: Use initial capacity or ArrayDeque\n\n");
+        strcat(optimized, "Example: new ArrayList<>(initialCapacity)");
+    } else if (strstr(code, "SELECT *")) {
+        strcpy(optimized, "CodeAgent Optimization: SQL query detected!\n\n");
+        strcat(optimized, "Before: SELECT * FROM table\n");
+        strcat(optimized, "After: SELECT column1, column2 FROM table\n\n");
+        strcat(optimized, "Benefit: Reduces data transfer, improves performance.");
+    } else if (strstr(code, "while") && strstr(code, "true")) {
+        strcpy(optimized, "CodeAgent Optimization: Infinite loop pattern!\n\n");
+        strcat(optimized, "Advice: Use for-loops when iteration count is known.\n");
+        strcat(optimized, "Consider: Breaking condition and performance implications.");
+    } else if (strstr(code, "String") && strstr(code, "+")) {
+        strcpy(optimized, "CodeAgent Optimization: String concatenation detected!\n\n");
+        strcat(optimized, "Before: str = str + \"new\";\n");
+        strcat(optimized, "After: StringBuilder.append(\"new\");\n\n");
+        strcat(optimized, "Benefit: O(n) instead of O(n²) for multiple concatenations.");
     } else if (strstr(code, "==") && strstr(code, "String")) {
-        strcpy(optimized, "CodeAgent Optimization: String comparison!\n\n"
-                "Before: str1 == str2 (compares references)\n"
-                "After: str1.equals(str2)\n\n"
-                "Benefit: Proper content comparison, avoids NPE.");
+        strcpy(optimized, "CodeAgent Optimization: String comparison detected!\n\n");
+        strcat(optimized, "Before: str1 == str2 (compares references)\n");
+        strcat(optimized, "After: str1.equals(str2) or Objects.equals()\n\n");
+        strcat(optimized, "Benefit: Proper content comparison, avoids NPE.");
     } else {
-        strcpy(optimized, "CodeAgent Optimization: Rekomendasi umum:\n\n"
-                "1. Profile dulu sebelum optimize\n"
-                "2. Gunakan data structures yang tepat\n"
-                "3. Minimalkan I/O, batch jika memungkinkan\n"
-                "4. Pertimbangkan caching untuk data sering akses\n"
-                "5. Lazy initialization dimana tepat");
+        strcpy(optimized, "CodeAgent Optimization: General recommendations:\n\n");
+        strcat(optimized, "1. Profile first before optimizing\n");
+        strcat(optimized, "2. Use appropriate data structures\n");
+        strcat(optimized, "3. Minimize I/O operations, batch when possible\n");
+        strcat(optimized, "4. Consider caching frequently accessed data\n");
+        strcat(optimized, "5. Use lazy initialization where appropriate");
     }
     return 0;
 }
 
 /* Explain code */
 int ai_codeagent_explain(const char *code, char *explanation) {
-    if (!code || !explanation) return -1;
-    
-    char lower_code[256];
-    strncpy(lower_code, code, 255);
-    lower_code[255] = '\0';
-    
-    for (int i = 0; lower_code[i]; i++) {
-        lower_code[i] = (char)tolower(lower_code[i]);
-    }
-    
-    if (strstr(lower_code, "typedef struct") || strstr(lower_code, "struct")) {
-        strcpy(explanation, "CodeAgent: Data Structure Definition\n\n"
-                "Kode ini mendefinisikan custom data structure (struct).\n"
-                "- typedef membuat shortcut untuk struct\n"
-                "- Struct mengelompokkan different data types\n"
-                "- Gunakan untuk: records, linked nodes, game objects, dll.");
-    } else if (strstr(lower_code, "pthread") || strstr(lower_code, "thread")) {
-        strcpy(explanation, "CodeAgent: Multi-threading\n\n"
-                "Kode ini menggunakan threads untuk concurrent execution.\n"
-                "- Multiple threads berbagi memory space yang sama\n"
-                "- Synchronization (mutex) dibutuhkan untuk shared data\n"
-                "- Benefits: CPU utilization lebih baik, responsive UI\n"
-                "- Risks: Race conditions, deadlocks");
-    } else if (strstr(lower_code, "select") && strstr(lower_code, "from")) {
-        strcpy(explanation, "CodeAgent: SQL Database Query\n\n"
-                "Ini adalah perintah database query language:\n"
-                "- SELECT: Specifies columns untuk retrieve\n"
-                "- FROM: Specifies table(s) untuk query\n"
-                "- WHERE: Filters results (optional)\n"
-                "- JOIN: Combines related tables");
-    } else if (strstr(lower_code, "def ") || strstr(lower_code, "function")) {
-        strcpy(explanation, "CodeAgent: Function/Method Definition\n\n"
-                "Ini mendefinisikan reusable block of code:\n"
-                "- Parameters: Input values yang diterima function\n"
-                "- Return type: Tipe nilai yang dikembalikan\n"
-                "- Body: Actual code logic\n"
-                "- Best practice: Single responsibility, clear naming.");
-    } else if (strstr(lower_code, "class ")) {
-        strcpy(explanation, "CodeAgent: Object-Oriented Class\n\n"
-                "Ini mendefinisikan blueprint untuk objects:\n"
-                "- Fields/Properties: Data yang dihold object\n"
-                "- Methods: Functions yang bisa dilakukan object\n"
-                "- Constructors: Initialize object state\n"
-                "- Encapsulation: Hide internal details");
-    } else if (strstr(lower_code, "async") || strstr(lower_code, "await")) {
-        strcpy(explanation, "CodeAgent: Asynchronous Programming\n\n"
-                "Kode ini menggunakan async/await pattern:\n"
-                "- async: Menandai function sebagai asynchronous\n"
-                "- await: Jeda execution sampai promise resolve\n"
-                "- Non-blocking: Kode lain bisa jalan sementara menunggu\n"
-                "- Common use: API calls, file I/O, database queries");
+    if (strstr(code, "typedef struct") || strstr(code, "struct")) {
+        strcpy(explanation, "CodeAgent Explanation: Data Structure Definition\n\n");
+        strcat(explanation, "This code defines a custom data structure (struct).\n");
+        strcat(explanation, "- 'typedef' creates a shortcut name for the struct\n");
+        strcat(explanation, "- Struct groups different data types together\n");
+        strcat(explanation, "- Used for: records, linked nodes, game objects, etc.\n\n");
+        strcat(explanation, "Example use case: Creating a linked list node with data and pointer.");
+    } else if (strstr(code, "pthread") || strstr(code, "thread")) {
+        strcpy(explanation, "CodeAgent Explanation: Multi-threading\n\n");
+        strcat(explanation, "This code uses threads for concurrent execution.\n");
+        strcat(explanation, "- Multiple threads share same memory space\n");
+        strcat(explanation, "- Synchronization (mutex) needed for shared data\n");
+        strcat(explanation, "- Benefits: Better CPU utilization, responsive UI\n");
+        strcat(explanation, "- Risks: Race conditions, deadlocks\n\n");
+        strcat(explanation, "Best practice: Minimize shared state between threads.");
+    } else if (strstr(code, "SELECT") && strstr(code, "FROM")) {
+        strcpy(explanation, "CodeAgent Explanation: SQL Database Query\n\n");
+        strcat(explanation, "This is a database query language command:\n");
+        strcat(explanation, "- SELECT: Specifies columns to retrieve\n");
+        strcat(explanation, "- FROM: Specifies table(s) to query\n");
+        strcat(explanation, "- WHERE: Filters results (optional)\n");
+        strcat(explanation, "- JOIN: Combines related tables\n\n");
+        strcat(explanation, "Best practice: Use parameterized queries to prevent SQL injection.");
+    } else if (strstr(code, "def ") || strstr(code, "function")) {
+        strcpy(explanation, "CodeAgent Explanation: Function/Method Definition\n\n");
+        strcat(explanation, "This defines a reusable block of code:\n");
+        strcat(explanation, "- Parameters: Input values the function accepts\n");
+        strcat(explanation, "- Return type: Type of value returned (if any)\n");
+        strcat(explanation, "- Body: The actual code logic\n\n");
+        strcat(explanation, "Best practice: Single responsibility, clear naming, document intent.");
+    } else if (strstr(code, "class ")) {
+        strcpy(explanation, "CodeAgent Explanation: Object-Oriented Class\n\n");
+        strcat(explanation, "This defines a blueprint for objects:\n");
+        strcat(explanation, "- Fields/Properties: Data the object holds\n");
+        strcat(explanation, "- Methods: Functions the object can perform\n");
+        strcat(explanation, "- Constructors: Initialize object state\n");
+        strcat(explanation, "- Encapsulation: Hide internal details\n\n");
+        strcat(explanation, "Key OOP principles: Inheritance, Polymorphism, Encapsulation.");
+    } else if (strstr(code, "async") || strstr(code, "await")) {
+        strcpy(explanation, "CodeAgent Explanation: Asynchronous Programming\n\n");
+        strcat(explanation, "This code uses async/await pattern:\n");
+        strcat(explanation, "- async: Marks function as asynchronous\n");
+        strcat(explanation, "- await: Pauses execution until promise resolves\n");
+        strcat(explanation, "- Non-blocking: Other code can run while waiting\n");
+        strcat(explanation, "- Common use: API calls, file I/O, database queries\n\n");
+        strcat(explanation, "Benefits: Better performance, more responsive applications.");
     } else {
-        strcpy(explanation, "CodeAgent: Kode ini sepertinya mengimplementasikan konsep pemrograman.\n"
-                "Untuk penjelasan detail, berikan:\n"
-                "- Bahasa pemrograman spesifik\n"
-                "- Konteks/tujuan kode\n"
-                "- Bagian spesifik yang ingin dijelaskan");
+        strcpy(explanation, "CodeAgent Explanation:\n\n");
+        strcat(explanation, "The code appears to implement a programming concept.\n");
+        strcat(explanation, "For detailed explanation, please provide:\n");
+        strcat(explanation, "- The specific programming language\n");
+        strcat(explanation, "- The context/purpose of the code\n");
+        strcat(explanation, "- Any specific sections you want explained");
     }
     return 0;
 }
+
